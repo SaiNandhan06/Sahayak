@@ -1,3 +1,6 @@
+# Read the doc: https://huggingface.co/docs/hub/spaces-sdks-docker
+# you will also find guides on how best to write your Dockerfile
+
 FROM python:3.10-slim
 
 # Install system dependencies
@@ -12,17 +15,37 @@ RUN apt-get update && apt-get install -y \
 # Install Ollama
 RUN curl -fsSL https://ollama.com/install.sh | sh
 
+# Set up a new user named "user" with user ID 1000
+RUN useradd -m -u 1000 user
+
+# Set home to the user's home directory
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH \
+    OLLAMA_MODELS=/home/user/.ollama/models
+
+# Create app directory and give ownership to user
+RUN mkdir -p /app && chown -R user:user /app /home/user
+
+# Switch to the "user" user
+USER user
+
 # Set working directory
 WORKDIR /app
 
 # Copy the entire backend
-COPY . .
+COPY --chown=user . .
 
 # Install Python backend dependencies
+ENV PATH="/home/user/.local/bin:$PATH"
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Start Ollama, pull models, AND run data generation to build ChromaDB
+RUN nohup bash -c "ollama serve &" && sleep 5 && \
+    ollama pull qwen2:0.5b && \
+    ollama pull nomic-embed-text && \
+    python data_generation.py
+
 # --- Setup Frontend ---
-# Make sure we're in the frontend dir, install deps, and build
 WORKDIR /app/Frontend
 RUN npm install --legacy-peer-deps
 RUN npm run build
@@ -30,21 +53,14 @@ RUN npm run build
 # Go back to the root directory
 WORKDIR /app
 
-# Expose the FastAPI port
-EXPOSE 8000
+# Expose the Hugging Face required port
+EXPOSE 7860
 
 # Create a startup script
-RUN echo '#!/bin/bash\n\
-# Start Ollama service in the background\n\
-ollama serve &\n\
-sleep 5\n\
-# Pull the required models (if not already cached)\n\
-ollama pull qwen2:0.5b\n\
-ollama pull nomic-embed-text\n\
-# Set the FastAPI to serve the built frontend statically\n\
-# Start FastAPI\n\
-uvicorn main:app --host 0.0.0.0 --port 8000\n\
-' > /app/start.sh
+RUN echo '#!/bin/bash' > /app/start.sh && \
+    echo 'ollama serve &' >> /app/start.sh && \
+    echo 'sleep 5' >> /app/start.sh && \
+    echo 'uvicorn main:app --host 0.0.0.0 --port 7860' >> /app/start.sh
 
 RUN chmod +x /app/start.sh
 

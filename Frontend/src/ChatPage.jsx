@@ -12,7 +12,7 @@ import AutorenewIcon from '@mui/icons-material/Autorenew'
 import AssessmentIcon from '@mui/icons-material/Assessment'
 
 // ── API config ────────────────────────────────────────────────────────────────
-const API_BASE = 'http://localhost:8000'
+const API_BASE = import.meta.env.PROD ? '' : 'http://localhost:8000'
 
 // ── Quick-prompt suggestions ──────────────────────────────────────────────────
 const SUGGESTIONS = [
