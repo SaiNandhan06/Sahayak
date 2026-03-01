@@ -14,6 +14,8 @@ import logging
 import logging.handlers
 import os
 from contextlib import asynccontextmanager
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -154,3 +156,11 @@ async def delete_history(session_id: str):
 async def health():
     """Returns API liveness status."""
     return HealthResponse(status="ok", message="Sahayak is running. 🟢")
+
+# ── Serve React Frontend (For Deployment) ────────────────────────────────────
+app.mount("/assets", StaticFiles(directory="Frontend/dist/assets"), name="assets")
+
+@app.get("/{full_path:path}")
+async def serve_frontend(full_path: str):
+    """Catch-all route to serve the Single Page Application"""
+    return FileResponse("Frontend/dist/index.html")
