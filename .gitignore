@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+dist/
+build/
+*.so
+
+# Virtual environment
+venv/
+.venv/
+env/
+ENV/
+
+# ChromaDB (generated at runtime)
+chroma_db/
+
+# Log files
+logs/
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# pytest cache
+.pytest_cache/
+.coverage
+htmlcov/

@@ -1,0 +1,48 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\M Sainandhan\OneDrive\Documents\2400033220_M.SaiNandhan_AgenticAI_BootCamp\Sahayak_Application\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\M Sainandhan\OneDrive\Documents\2400033220_M.SaiNandhan_AgenticAI_BootCamp\Sahayak_Application
+plugins: anyio-4.12.1, langsmith-0.7.6
+collecting ... collected 39 items
+
+tests/test_api.py::test_health_returns_200 PASSED                        [  2%]
+tests/test_api.py::test_chat_returns_valid_response PASSED               [  5%]
+tests/test_api.py::test_chat_creates_session_history PASSED              [  7%]
+tests/test_api.py::test_chat_accumulates_history_across_turns PASSED     [ 10%]
+tests/test_api.py::test_chat_rejects_empty_message PASSED                [ 12%]
+tests/test_api.py::test_chat_rejects_empty_session_id PASSED             [ 15%]
+tests/test_api.py::test_chat_returns_500_on_llm_error PASSED             [ 17%]
+tests/test_api.py::test_get_history_returns_correct_messages PASSED      [ 20%]
+tests/test_api.py::test_get_history_404_for_unknown_session PASSED       [ 23%]
+tests/test_api.py::test_delete_history_clears_session PASSED             [ 25%]
+tests/test_api.py::test_delete_history_404_for_missing_session PASSED    [ 28%]
+tests/test_history.py::test_new_session_does_not_exist PASSED            [ 30%]
+tests/test_history.py::test_get_nonexistent_session_returns_empty_list PASSED [ 33%]
+tests/test_history.py::test_add_user_message_creates_session PASSED      [ 35%]
+tests/test_history.py::test_add_user_message_stored_correctly PASSED     [ 38%]
+tests/test_history.py::test_add_assistant_message PASSED                 [ 41%]
+tests/test_history.py::test_add_multiple_messages_preserves_order PASSED [ 43%]
+tests/test_history.py::test_clear_existing_session_returns_true PASSED   [ 46%]
+tests/test_history.py::test_clear_removes_session PASSED                 [ 48%]
+tests/test_history.py::test_clear_nonexistent_session_returns_false PASSED [ 51%]
+tests/test_history.py::test_all_sessions_empty_initially PASSED          [ 53%]
+tests/test_history.py::test_all_sessions_lists_active_sessions PASSED    [ 56%]
+tests/test_history.py::test_all_sessions_after_clear PASSED              [ 58%]
+tests/test_history.py::test_sessions_are_isolated PASSED                 [ 61%]
+tests/test_rag_chain.py::test_format_history_empty PASSED                [ 64%]
+tests/test_rag_chain.py::test_format_history_user_turn PASSED            [ 66%]
+tests/test_rag_chain.py::test_format_history_multi_turn PASSED           [ 69%]
+tests/test_rag_chain.py::test_format_history_unknown_role PASSED         [ 71%]
+tests/test_rag_chain.py::test_format_docs_empty PASSED                   [ 74%]
+tests/test_rag_chain.py::test_format_docs_single PASSED                  [ 76%]
+tests/test_rag_chain.py::test_format_docs_multiple_have_separator PASSED [ 79%]
+tests/test_rag_chain.py::test_prompt_template_has_all_variables PASSED   [ 82%]
+tests/test_rag_chain.py::test_prompt_template_renders_correctly PASSED   [ 84%]
+tests/test_rag_chain.py::test_prompt_template_contains_system_prompt PASSED [ 87%]
+tests/test_rag_chain.py::test_get_rag_response_returns_string PASSED     [ 89%]
+tests/test_rag_chain.py::test_get_rag_response_strips_whitespace PASSED  [ 92%]
+tests/test_rag_chain.py::test_get_rag_response_uses_history PASSED       [ 94%]
+tests/test_rag_chain.py::test_get_rag_response_uses_correct_k PASSED     [ 97%]
+tests/test_rag_chain.py::test_get_rag_response_raises_on_llm_error PASSED [100%]
+
+============================= 39 passed in 4.33s ==============================
